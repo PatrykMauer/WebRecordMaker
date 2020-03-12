@@ -4,12 +4,11 @@
     <e p="C:\C#\WebRecordMaker\WebRecordMaker" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="RecordMaker.Api" t="IncludeRecursive">
-        <e p=".gitignore" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Controllers" t="Include">
-          <e p="WeatherForecastController.cs" t="Include" />
+          <e p="UsersController.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -24,10 +23,14 @@
         </e>
         <e p="RecordMaker.Api.csproj" t="IncludeRecursive" />
         <e p="Startup.cs" t="Include" />
-        <e p="WeatherForecast.cs" t="Include" />
       </e>
       <e p="RecordMaker.Core" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Domain" t="Include">
+          <e p="Cell.cs" t="Include" />
+          <e p="Table.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
@@ -36,9 +39,15 @@
           </e>
         </e>
         <e p="RecordMaker.Core.csproj" t="IncludeRecursive" />
+        <e p="Repositories" t="Include">
+          <e p="IUserRepository.cs" t="Include" />
+        </e>
       </e>
       <e p="RecordMaker.Infrastructure" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="DTO" t="Include">
+          <e p="UserDTO.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
@@ -47,6 +56,13 @@
           </e>
         </e>
         <e p="RecordMaker.Infrastructure.csproj" t="IncludeRecursive" />
+        <e p="Repositories" t="Include">
+          <e p="InMemoryUserRepository.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="IUserService.cs" t="Include" />
+          <e p="UserService.cs" t="Include" />
+        </e>
       </e>
       <e p="RecordMaker.Tests" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
