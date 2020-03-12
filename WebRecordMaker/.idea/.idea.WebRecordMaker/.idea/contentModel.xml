@@ -40,6 +40,7 @@
         </e>
         <e p="RecordMaker.Core.csproj" t="IncludeRecursive" />
         <e p="Repositories" t="Include">
+          <e p="ITableRepository.cs" t="Include" />
           <e p="IUserRepository.cs" t="Include" />
         </e>
       </e>
@@ -57,6 +58,7 @@
         </e>
         <e p="RecordMaker.Infrastructure.csproj" t="IncludeRecursive" />
         <e p="Repositories" t="Include">
+          <e p="InMemoryTableRepository.cs" t="Include" />
           <e p="InMemoryUserRepository.cs" t="Include" />
         </e>
         <e p="Services" t="Include">
