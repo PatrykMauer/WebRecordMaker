@@ -47,7 +47,12 @@
       <e p="RecordMaker.Infrastructure" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="DTO" t="Include">
+          <e p="CellDto.cs" t="Include" />
+          <e p="TableDto.cs" t="Include" />
           <e p="UserDTO.cs" t="Include" />
+        </e>
+        <e p="Mappers" t="Include">
+          <e p="AutoMapperConfig.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -62,7 +67,9 @@
           <e p="InMemoryUserRepository.cs" t="Include" />
         </e>
         <e p="Services" t="Include">
+          <e p="ITableService.cs" t="Include" />
           <e p="IUserService.cs" t="Include" />
+          <e p="TableService.cs" t="Include" />
           <e p="UserService.cs" t="Include" />
         </e>
       </e>
@@ -101,6 +108,7 @@
     <e p="C:\Users\patrykmauer\.nuget\packages\nunit3testadapter\3.15.1\build\netcoreapp2.0\nunit.engine.dll" t="Include" />
     <e p="C:\Users\patrykmauer\.nuget\packages\nunit3testadapter\3.15.1\build\netcoreapp2.0\NUnit3.TestAdapter.dll" t="Include" />
     <e p="C:\Users\patrykmauer\.nuget\packages\nunit3testadapter\3.15.1\build\netcoreapp2.0\NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="C:\Users\patrykmauer\.Rider2019.3\config\scratches" t="IncludeRecursive" />
     <e p="C:\Users\patrykmauer\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\patrykmauer\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_WebRecordMaker.-1553397552.00" t="ExcludeRecursive" />
   </component>

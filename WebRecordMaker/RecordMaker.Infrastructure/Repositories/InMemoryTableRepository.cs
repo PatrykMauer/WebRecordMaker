@@ -11,8 +11,8 @@ namespace RecordMaker.Infrastructure.Repositories
 
         private static ISet<Table> _tables=new HashSet<Table>()
         {
-            new Table(Guid.NewGuid(), "10x10"),
-            new Table(Guid.NewGuid(), "11x11"),
+            new Table( "10x10"),
+            new Table("11x11")
         };
 
         public Table Get(Guid id)

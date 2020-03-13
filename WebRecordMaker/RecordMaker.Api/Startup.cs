@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RecordMaker.Core.Repositories;
+using RecordMaker.Infrastructure.Mappers;
 using RecordMaker.Infrastructure.Repositories;
 using RecordMaker.Infrastructure.Services;
 
@@ -30,6 +31,7 @@ namespace RecordMaker.Api
         {
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddControllers();
         }
 

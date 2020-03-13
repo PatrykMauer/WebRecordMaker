@@ -13,7 +13,6 @@ namespace RecordMaker.Infrastructure.Repositories
             new User("referee1@wp.pl","referee1","secret","salt","Observer"),
             new User("referee2@wp.pl","referee2","secret","salt","Observer"),
             new User("referee3@wp.pl","referee3","secret","salt","Observer"),
-
         };
 
         public User Get(Guid id)

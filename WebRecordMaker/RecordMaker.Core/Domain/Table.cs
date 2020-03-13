@@ -13,16 +13,16 @@ namespace RecordMaker.Core.Domain
         {
             
         }
-        public Table(Guid id, string size)
+        public Table( string size)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             Size = size;
         }
 
-        public void AddCell(int rowNumber, char columnLetter, string text)
+        public void AddCell( int rowNumber, char columnLetter, string text)
         {
             var cell=new Cell(rowNumber,columnLetter,text);
-            //?
+            //????Cells=
         }
     }
 }
