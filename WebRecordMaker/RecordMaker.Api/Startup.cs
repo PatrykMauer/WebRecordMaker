@@ -31,6 +31,8 @@ namespace RecordMaker.Api
         {
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITableRepository, InMemoryTableRepository>();
+            services.AddScoped<ITableService, TableService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddControllers();
         }

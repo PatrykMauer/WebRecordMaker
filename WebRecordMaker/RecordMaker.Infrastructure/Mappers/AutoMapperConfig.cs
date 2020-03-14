@@ -11,6 +11,7 @@ namespace RecordMaker.Infrastructure.Mappers
                 {
                     cfg.CreateMap<User, UserDto>();
                     cfg.CreateMap<Table, TableDto>();
+                    cfg.CreateMap<Cell, CellDto>();
                 })
                 .CreateMapper();
     }

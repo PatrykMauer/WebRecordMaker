@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
@@ -23,9 +24,16 @@ namespace RecordMaker.Infrastructure.Services
             return _mapper.Map<Table, TableDto>(table);
         }
 
-        public void Add(string size)
+        public IEnumerable<TableDto> GetAll()
         {
-           var table =new Table(size);
+            var tables = _tableRepository.GetAll();
+            return _mapper.Map<IEnumerable<Table>, IEnumerable<TableDto>>(tables);
+        }
+
+        public void Add(string size, List<Cell> cells)
+        {
+           var table = new Table(size);
+           table.AddAllCells(cells);
            _tableRepository.Add(table);
         }
     }

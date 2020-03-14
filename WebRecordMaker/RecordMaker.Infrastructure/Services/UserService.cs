@@ -23,7 +23,7 @@ namespace RecordMaker.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public void Register(string email,string username, string password,string profession)
+        public void Register(string email,string username, string password, string profession)
         {
             var user = _userRepository.Get(email);
             if (user != null)

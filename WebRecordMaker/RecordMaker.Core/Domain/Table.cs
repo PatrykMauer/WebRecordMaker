@@ -7,22 +7,30 @@ namespace RecordMaker.Core.Domain
     {
         public Guid Id { get; protected set; }
         public string Size { get; protected set; }
-        public IEnumerable<Cell> Cells { get; protected set; }
+
+        public List<Cell> Cells { get; protected set; }
+            =new List<Cell>();
+           
 
         protected Table()
         {
-            
         }
         public Table( string size)
         {
             Id = Guid.NewGuid();
             Size = size;
+            Cells=new List<Cell>();
         }
 
         public void AddCell( int rowNumber, char columnLetter, string text)
         {
             var cell=new Cell(rowNumber,columnLetter,text);
-            //????Cells=
+            Cells.Add(cell);
+        }
+
+        public void AddAllCells(List<Cell> cells)
+        {
+            Cells = cells;
         }
     }
 }

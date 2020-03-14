@@ -8,6 +8,7 @@
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Controllers" t="Include">
+          <e p="TablesController.cs" t="Include" />
           <e p="UsersController.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
@@ -46,6 +47,15 @@
       </e>
       <e p="RecordMaker.Infrastructure" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Commands" t="Include">
+          <e p="Tables" t="Include">
+            <e p="CreateTable.cs" t="Include" />
+          </e>
+          <e p="Users" t="Include">
+            <e p="CreateUser.cs" t="Include" />
+            <e p="ICommand.cs" t="Include" />
+          </e>
+        </e>
         <e p="DTO" t="Include">
           <e p="CellDto.cs" t="Include" />
           <e p="TableDto.cs" t="Include" />

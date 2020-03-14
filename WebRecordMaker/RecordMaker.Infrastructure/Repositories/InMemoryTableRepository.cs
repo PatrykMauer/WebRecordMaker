@@ -16,7 +16,7 @@ namespace RecordMaker.Infrastructure.Repositories
         };
 
         public Table Get(Guid id)
-            => _tables.Single(x => x.Id == id);
+            => _tables.SingleOrDefault(x => x.Id == id);
 
         public IEnumerable<Table> GetAll()
             => _tables;
@@ -31,7 +31,7 @@ namespace RecordMaker.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public void Remove(Guid id)//???
+        public void Remove(Guid id)
         => _tables.Remove(_tables.Single(x => x.Id == id));
         
     }

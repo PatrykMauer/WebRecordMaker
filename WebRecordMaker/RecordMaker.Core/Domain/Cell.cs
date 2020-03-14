@@ -2,7 +2,7 @@
 
 namespace RecordMaker.Core.Domain
 {
-    public class Cell //ValueObject ->immutable?
+    public class Cell //ValueObject ->immutable
     {
         public Guid TableId { get; protected set; }
         public int RowNumber { get; protected set; }
@@ -13,7 +13,6 @@ namespace RecordMaker.Core.Domain
         }
         public Cell(int rowNumber,char columnLetter, string text)
         {
-           
            SetRowNumber(rowNumber);
            SetColumnLetter(columnLetter);
            SetText(text);
