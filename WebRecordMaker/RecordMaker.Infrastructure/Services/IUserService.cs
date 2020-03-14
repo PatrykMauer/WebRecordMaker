@@ -1,10 +1,11 @@
-﻿using RecordMaker.Infrastructure.DTO;
+﻿using System.Threading.Tasks;
+using RecordMaker.Infrastructure.DTO;
 
 namespace RecordMaker.Infrastructure.Services
 {
     public interface IUserService
     {
-        UserDto Get(string email);
-        void Register(string email,string username, string password, string profession);
+        Task<UserDto> GetAsync(string email);
+        Task RegisterAsync(string email,string username, string password, string profession);
     }
 }

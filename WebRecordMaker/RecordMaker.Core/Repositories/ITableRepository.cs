@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RecordMaker.Core.Domain;
 
 namespace RecordMaker.Core.Repositories
 {
     public interface ITableRepository
     {
-        Table Get(Guid id);
-        IEnumerable<Table> GetAll();
-        void Add(Table table);
-        void Update(Table table);
-        void Remove(Guid id);
+        Task<Table> GetAsync(Guid id);
+        Task<IEnumerable<Table>> GetAllAsync();
+        Task AddAsync(Table table);
+        Task UpdateAsync(Table table);
+        Task RemoveAsync(Guid id);
     }
 }

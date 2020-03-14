@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
@@ -18,23 +19,23 @@ namespace RecordMaker.Infrastructure.Services
             _mapper = mapper;
         }
         
-        public TableDto Get(Guid id)
+        public async Task<TableDto> GetAsync(Guid id)
         {
-            var table = _tableRepository.Get(id);
+            var table = await _tableRepository.GetAsync(id);
             return _mapper.Map<Table, TableDto>(table);
         }
 
-        public IEnumerable<TableDto> GetAll()
+        public async Task<IEnumerable<TableDto>> GetAllAsync()
         {
-            var tables = _tableRepository.GetAll();
+            var tables =await  _tableRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<Table>, IEnumerable<TableDto>>(tables);
         }
 
-        public void Add(string size, List<Cell> cells)
+        public async Task AddAsync(string size, List<Cell> cells)
         {
            var table = new Table(size);
            table.AddAllCells(cells);
-           _tableRepository.Add(table);
+           await _tableRepository.AddAsync(table);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands.Tables;
@@ -20,18 +21,18 @@ namespace RecordMaker.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public TableDto Get(Guid id)
-            => _tableService.Get(id);
+        public async Task<TableDto> Get(Guid id)
+            => await _tableService.GetAsync(id);
 
         [Microsoft.AspNetCore.Mvc.Route("all")]
         [HttpGet]
-        public IEnumerable<TableDto> GetAll()
-            => _tableService.GetAll();
+        public async Task<IEnumerable<TableDto>> GetAll()
+            => await _tableService.GetAllAsync();
         
         [HttpPost("")]
-        public void Post([FromBody] CreateTable request)
+        public async Task Post([FromBody] CreateTable request)
         {
-            _tableService.Add(request.Size,request.Cells);
+            await _tableService.AddAsync(request.Size,request.Cells);
         }
     }
 }

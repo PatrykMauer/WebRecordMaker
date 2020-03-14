@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
 
@@ -15,24 +16,25 @@ namespace RecordMaker.Infrastructure.Repositories
             new Table("11x11")
         };
 
-        public Table Get(Guid id)
-            => _tables.SingleOrDefault(x => x.Id == id);
+        public async Task<Table> GetAsync(Guid id)
+            => await Task.FromResult( _tables.SingleOrDefault(x => x.Id == id));
 
-        public IEnumerable<Table> GetAll()
-            => _tables;
+        public async Task<IEnumerable<Table>> GetAllAsync()
+            => await Task.FromResult(_tables);
 
-        public void Add(Table table)
+        public async Task AddAsync(Table table)
         {
-            _tables.Add(table);
+            await Task.FromResult(_tables.Add(table));
         }
 
-        public void Update(Table table)
+        public async Task UpdateAsync(Table table)
         {
-            throw new NotImplementedException();
+          throw new NotImplementedException();
+           await Task.CompletedTask;
         }
 
-        public void Remove(Guid id)
-        => _tables.Remove(_tables.Single(x => x.Id == id));
+        public async Task RemoveAsync(Guid id)
+        => await Task.FromResult(_tables.Remove(_tables.Single(x => x.Id == id)));
         
     }
 }
