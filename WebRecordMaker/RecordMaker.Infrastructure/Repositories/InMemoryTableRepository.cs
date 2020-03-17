@@ -29,7 +29,6 @@ namespace RecordMaker.Infrastructure.Repositories
 
         public async Task UpdateAsync(Table table)
         {
-          throw new NotImplementedException();
            await Task.CompletedTask;
         }
 

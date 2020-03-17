@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.DTO;
 using RecordMaker.Infrastructure.Services;
@@ -11,10 +12,11 @@ namespace RecordMaker.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        
-        public UsersController(IUserService userService)
+        private readonly ICommandDispatcher _commandDispatcher;
+        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
             _userService = userService;
+            _commandDispatcher = commandDispatcher;
         }
 
         [HttpGet("{email}")]
@@ -22,9 +24,9 @@ namespace RecordMaker.Api.Controllers
             => await _userService.GetAsync(email);
 
         [HttpPost("")]
-        public async Task Post([FromBody] CreateUser request)
+        public async Task Post([FromBody] CreateUser command)
         {
-            await _userService.RegisterAsync(request.Email,request.Username,request.Password,request.Profession);
+            await _commandDispatcher.DispatchAsync(command);
         }
     }
 }
