@@ -3,7 +3,7 @@ using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.Services;
 
-namespace RecordMaker.Infrastructure.Handlers
+namespace RecordMaker.Infrastructure.Handlers.Users
 {
     public class CreateUserHandler: ICommandHandler<CreateUser>
     {

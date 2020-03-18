@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
+using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Tables;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.DTO;
@@ -12,13 +13,15 @@ namespace RecordMaker.Api.Controllers
 {
     [ApiController]
     [Microsoft.AspNetCore.Mvc.Route("[controller]")]
-    public class TablesController : ControllerBase
+    public class TablesController : ApiControllerBase
     {
         private readonly ITableService _tableService;
-        public TablesController(ITableService tableService)
+
+        public TablesController(ITableService tableService,
+            ICommandDispatcher commandDispatcher):base(commandDispatcher)
         {
             _tableService = tableService;
-        }
+        }    
 
         [HttpGet("{id}")]
         public async Task<TableDto> Get(Guid id)
@@ -30,9 +33,9 @@ namespace RecordMaker.Api.Controllers
             => await _tableService.GetAllAsync();
         
         [HttpPost("")]
-        public async Task Post([FromBody] CreateTable request)
+        public async Task Post([FromBody] CreateTable command)
         {
-            await _tableService.AddAsync(request.Size,request.Cells);
+            await CommandDispatcher.DispatchAsync(command);
         }
     }
 }

@@ -36,22 +36,27 @@ namespace RecordMaker.Api
         public IContainer ApplicationContainer { get; private set; }
         public ILifetimeScope AutofacContainer { get; private set; }
 
+     
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITableRepository, InMemoryTableRepository>();
             services.AddScoped<ITableService, TableService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
-            services.AddControllers();
             services.AddOptions();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            container.RegisterModule<CommandModule>();
+
+            return new AutofacServiceProvider(container.Build());
         }
-        public void ConfigureContainer(ContainerBuilder builder)
-          {
-            // Register your own things directly with Autofac, like:
-            builder.RegisterModule(new CommandModule());
-          }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
@@ -61,7 +66,6 @@ namespace RecordMaker.Api
                 app.UseDeveloperExceptionPage();
             }
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-
 
             app.UseHttpsRedirection();
 

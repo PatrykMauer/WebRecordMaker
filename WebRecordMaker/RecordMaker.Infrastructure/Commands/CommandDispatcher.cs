@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Autofac;
 
-namespace RecordMaker.Infrastructure.Commands.Users
+namespace RecordMaker.Infrastructure.Commands
 {
     public class CommandDispatcher:ICommandDispatcher
     {
