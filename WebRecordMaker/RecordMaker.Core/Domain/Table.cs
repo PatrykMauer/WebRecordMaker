@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RecordMaker.Core.Domain
 {
@@ -25,6 +26,10 @@ namespace RecordMaker.Core.Domain
         public void AddCell( int rowNumber, char columnLetter, string text)
         {
             var cell=new Cell(rowNumber,columnLetter,text);
+            if (Cells.Any(x => x.RowNumber == rowNumber && x.ColumnLetter == columnLetter))
+            {
+                Cells.RemoveAll(x => x.RowNumber == rowNumber && x.ColumnLetter == columnLetter);
+            }
             Cells.Add(cell);
         }
 

@@ -4,7 +4,6 @@ namespace RecordMaker.Core.Domain
 {
     public class Cell //ValueObject ->immutable
     {
-        public Guid TableId { get; protected set; }
         public int RowNumber { get; protected set; }
         public char ColumnLetter { get; protected set; }
         public string Text { get;protected set; }

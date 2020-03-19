@@ -12,39 +12,33 @@ namespace RecordMaker.Tests.Services
 {
     public class UserServiceTests
     {
+        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+        private readonly Mock<IMapper> _mapperMock = new Mock<IMapper>();
+          
         [Fact]
-        public async Task register_async_should_invoke_add_async_get_async_on_repository()
+        public async Task register_async_should_invoke_add_async__on_repository()
         {
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var mapperMock = new Mock<IMapper>();
-            
-            var userService=new UserService(userRepositoryMock.Object,mapperMock.Object);
+            var userService=new UserService(_userRepositoryMock.Object,_mapperMock.Object);
             await userService.RegisterAsync("obserer@wp.pl", "observ", "seceret", "Observer");
             
-            userRepositoryMock.Verify(x=>x.AddAsync(It.IsAny<User>()),Times.Once);
+            _userRepositoryMock.Verify(x=>x.AddAsync(It.IsAny<User>()),Times.Once);
         }
         [Fact]
         public async Task register_async_should_invoke_get_async_on_repository()
         {
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var mapperMock = new Mock<IMapper>();
-            
-            var userService=new UserService(userRepositoryMock.Object,mapperMock.Object);
+            var userService=new UserService(_userRepositoryMock.Object,_mapperMock.Object);
             await userService.RegisterAsync("obserer@wp.pl", "observ", "seceret", "Observer");
             
-            userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once);
+            _userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once);
         }
 
         [Fact]
         public async Task get_async_should_invoke_get_async_on_repository()
         {
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var mapperMock = new Mock<IMapper>();
-            
-            var userService=new UserService(userRepositoryMock.Object,mapperMock.Object);
+            var userService=new UserService(_userRepositoryMock.Object,_mapperMock.Object);
             await userService.GetAsync("email@email.com");
             
-            userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once());
+            _userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once());
         }
     }
 }
