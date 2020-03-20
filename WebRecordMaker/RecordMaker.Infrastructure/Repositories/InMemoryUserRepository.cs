@@ -31,9 +31,15 @@ namespace RecordMaker.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(User newUserData)
         {
-            await Task.CompletedTask;
+            var oldUser = _users.SingleOrDefault(x 
+                => x.Id == newUserData.Id);
+            //deadlock jakich metod nie uzywac na tasku .result
+             _users.Remove(oldUser);
+             _users.Add(newUserData);
+
+             await Task.CompletedTask;
         }
 
         public async Task RemoveAsync(Guid id)

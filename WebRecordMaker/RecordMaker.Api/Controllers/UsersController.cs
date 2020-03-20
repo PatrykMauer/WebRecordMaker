@@ -4,6 +4,7 @@ using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.DTO;
 using RecordMaker.Infrastructure.Services;
+using RecordMaker.Infrastructure.Settings;
 
 namespace RecordMaker.Api.Controllers
 {
@@ -23,9 +24,11 @@ namespace RecordMaker.Api.Controllers
             => await _userService.GetAsync(email);
 
         [HttpPost("")]
-        public async Task Post([FromBody] CreateUser command)
+        public async Task<IActionResult> Post([FromBody] CreateUser command)
         {
             await CommandDispatcher.DispatchAsync(command);
+
+            return Ok();
         }
     }
 }

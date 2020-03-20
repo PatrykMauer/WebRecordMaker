@@ -1,23 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using RecordMaker.Core.Repositories;
+using RecordMaker.Infrastructure.IoC;
 using RecordMaker.Infrastructure.IoC.Modules;
 using RecordMaker.Infrastructure.Mappers;
 using RecordMaker.Infrastructure.Repositories;
 using RecordMaker.Infrastructure.Services;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace RecordMaker.Api
 {
@@ -35,46 +30,32 @@ namespace RecordMaker.Api
         public IConfigurationRoot Configuration { get; }
         public IContainer ApplicationContainer { get; private set; }
         public ILifetimeScope AutofacContainer { get; private set; }
-
-     
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        
+        public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-            services.AddScoped<IUserRepository, InMemoryUserRepository>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITableRepository, InMemoryTableRepository>();
-            services.AddScoped<ITableService, TableService>();
-            services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddOptions();
+            services.AddAuthorization();
+            services.AddControllers();
+            services.AddHttpClient();
 
-            var container = new ContainerBuilder();
-            container.Populate(services);
-            container.RegisterModule<CommandModule>();
-
-            return new AutofacServiceProvider(container.Build());
+        }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new ContainerModule(Configuration));
         }
         
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-
-            app.UseHttpsRedirection();
-
+            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             app.UseRouting();
 
+            // Endpoint aware middleware. 
+            // Middleware can use metadata from the matched endpoint.
             app.UseAuthorization();
 
+            // Execute the matched endpoint.
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+          //  appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }

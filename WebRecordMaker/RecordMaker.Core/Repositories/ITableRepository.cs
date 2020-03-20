@@ -5,7 +5,7 @@ using RecordMaker.Core.Domain;
 
 namespace RecordMaker.Core.Repositories
 {
-    public interface ITableRepository
+    public interface ITableRepository : IRepository
     {
         Task<Table> GetAsync(Guid id);
         Task<IEnumerable<Table>> GetAllAsync();

@@ -35,5 +35,16 @@ namespace RecordMaker.Infrastructure.Services
             user=new User(email,username,password,salt,profession);
             await _userRepository.AddAsync(user);
         }
+
+        public async Task UpdateEmail(string currentEmail, string newEmail)
+        {
+            var user = await _userRepository.GetAsync(currentEmail);
+            if (user == null)
+            {
+                throw new Exception($"User with email '{currentEmail}' doesn't exists.");
+            }
+            user.ChangeEmail(newEmail);
+            await _userRepository.UpdateAsync(user);
+        }
     }
 }

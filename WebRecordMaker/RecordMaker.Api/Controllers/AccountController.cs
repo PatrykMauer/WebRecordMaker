@@ -20,5 +20,14 @@ namespace RecordMaker.Api.Controllers
 
             return NoContent();
         }
+        
+        [HttpPut]
+        [Route("email")]
+        public async Task<IActionResult> Put(ChangeUserEmail command)
+        {
+            await CommandDispatcher.DispatchAsync(command);
+
+            return NoContent();
+        }
     }
 }

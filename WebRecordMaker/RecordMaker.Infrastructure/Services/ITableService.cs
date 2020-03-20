@@ -6,10 +6,11 @@ using RecordMaker.Infrastructure.DTO;
 
 namespace RecordMaker.Infrastructure.Services
 {
-    public interface ITableService
+    public interface ITableService : IService
+
     {
-        Task<TableDto> GetAsync(Guid id);
-        Task<IEnumerable<TableDto>> GetAllAsync();
-        Task AddAsync(string size, List<Cell> cells);
+    Task<TableDto> GetAsync(Guid id);
+    Task<IEnumerable<TableDto>> GetAllAsync();
+    Task AddAsync(string size, List<Cell> cells);
     }
 }

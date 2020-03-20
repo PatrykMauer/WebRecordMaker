@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecordMaker.Core.Domain
 {
     public class User
     {
         public Guid Id { get; protected set; }
+        [Required]
+        [EmailAddress]
         public string Email { get; protected set; }
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
@@ -29,6 +32,10 @@ namespace RecordMaker.Core.Domain
             Profession = profession;
             CreatedAt = DateTime.UtcNow;
         }
+
+        public void ChangeEmail(string newEmail)
+        {
+            Email = newEmail;
+        }
     }
-    
 }
