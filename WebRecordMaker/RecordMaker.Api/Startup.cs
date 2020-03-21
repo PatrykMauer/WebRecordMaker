@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Text;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,10 @@ using RecordMaker.Infrastructure.IoC.Modules;
 using RecordMaker.Infrastructure.Mappers;
 using RecordMaker.Infrastructure.Repositories;
 using RecordMaker.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using RecordMaker.Infrastructure.Extensions;
+using RecordMaker.Infrastructure.Settings;
 
 namespace RecordMaker.Api
 {
@@ -38,7 +43,31 @@ namespace RecordMaker.Api
             services.AddControllers();
             services.AddHttpClient();
 
-        }
+            var key = Configuration
+                .GetSettings<JwtSettings>().Key;
+
+            var issuer = Configuration
+                .GetSettings<JwtSettings>().Issuer;
+
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                        ValidIssuer = issuer,
+                        ValidateAudience = false
+                    };
+                });
+        } 
+        
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new ContainerModule(Configuration));
@@ -51,6 +80,7 @@ namespace RecordMaker.Api
 
             // Endpoint aware middleware. 
             // Middleware can use metadata from the matched endpoint.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Execute the matched endpoint.

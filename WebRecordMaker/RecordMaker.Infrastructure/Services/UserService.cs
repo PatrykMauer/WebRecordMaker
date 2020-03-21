@@ -11,11 +11,16 @@ namespace RecordMaker.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IEncrypter _encrypter;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+
+        public UserService(IUserRepository userRepository,
+            IMapper mapper,
+            IEncrypter encrypter)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _encrypter = encrypter;
         }
 
         public async Task<UserDto> GetAsync(string email)
@@ -31,8 +36,10 @@ namespace RecordMaker.Infrastructure.Services
             {
                 throw new Exception($"User with email '{email}' already exists.");
             }
-            var salt=Guid.NewGuid().ToString("N");
-            user=new User(email,username,password,salt,profession);
+
+            var salt = _encrypter.GetSalt(password);
+            var hash = _encrypter.GetHash(password, salt);
+            user=new User(email,username,hash,salt,profession);
             await _userRepository.AddAsync(user);
         }
 

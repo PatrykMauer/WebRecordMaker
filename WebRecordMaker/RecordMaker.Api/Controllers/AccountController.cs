@@ -8,10 +8,22 @@ namespace RecordMaker.Api.Controllers
 {
     public class AccountController : ApiControllerBase
     {
-        public AccountController(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+        private readonly IJwtHandler _jwtHandler;
+        public AccountController(ICommandDispatcher commandDispatcher,
+            IJwtHandler jwtHandler) : base(commandDispatcher)
         {
+            _jwtHandler = jwtHandler;
         }
 
+        [HttpGet]
+        [Route("token")]
+        public IActionResult Get()
+        {
+            var token = _jwtHandler.CreateToken("referee1@wp.pl", "Referee");
+
+            return Ok(token);
+        }
+        
         [HttpPut]
         [Route("password")]
         public async Task<IActionResult> Put(ChangeUserPassword command)

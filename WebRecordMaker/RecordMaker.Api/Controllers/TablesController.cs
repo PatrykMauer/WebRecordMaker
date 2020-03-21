@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Tables;
@@ -25,6 +26,7 @@ namespace RecordMaker.Api.Controllers
         public async Task<TableDto> Get(Guid id)
             => await _tableService.GetAsync(id);
 
+        [Authorize]
         [Route("all")]
         [HttpGet]
         public async Task<IEnumerable<TableDto>> GetAll()
