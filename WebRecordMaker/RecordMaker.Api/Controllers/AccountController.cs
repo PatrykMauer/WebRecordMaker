@@ -19,7 +19,7 @@ namespace RecordMaker.Api.Controllers
         [Route("token")]
         public IActionResult Get()
         {
-            var token = _jwtHandler.CreateToken("referee1@wp.pl", "Referee");
+            var token = _jwtHandler.CreateToken("referee1@wp.pl", "observer");
 
             return Ok(token);
         }

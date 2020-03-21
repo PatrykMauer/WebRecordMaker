@@ -39,7 +39,8 @@ namespace RecordMaker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddAuthorization();
+            services.AddAuthorization(x=>x.AddPolicy("MustBeObserver",
+                p=>p.RequireRole("observer")));
             services.AddControllers();
             services.AddHttpClient();
 
