@@ -21,7 +21,7 @@ namespace RecordMaker.Tests.Services
         public async Task register_async_should_invoke_add_async__on_repository()
         {
             var userService=new UserService(_userRepositoryMock.Object,_mapperMock.Object, _encrypterMock.Object);
-            await userService.RegisterAsync("obserer@wp.pl", "observ", "seceret", "Observer");
+            await userService.RegisterAsync(Guid.NewGuid(),"obserer@wp.pl", "observ", "seceret", "Observer");
             
             _userRepositoryMock.Verify(x=>x.AddAsync(It.IsAny<User>()),Times.Once);
         }
@@ -29,7 +29,7 @@ namespace RecordMaker.Tests.Services
         public async Task register_async_should_invoke_get_async_on_repository()
         {
             var userService=new UserService(_userRepositoryMock.Object,_mapperMock.Object, _encrypterMock.Object);
-            await userService.RegisterAsync("obserer@wp.pl", "observ", "seceret", "Observer");
+            await userService.RegisterAsync(Guid.NewGuid(),"obserer@wp.pl", "observ", "seceret", "Observer");
             
             _userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once);
         }

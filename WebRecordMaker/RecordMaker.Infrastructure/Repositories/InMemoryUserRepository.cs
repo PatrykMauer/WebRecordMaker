@@ -9,12 +9,8 @@ namespace RecordMaker.Infrastructure.Repositories
 {
     public class InMemoryUserRepository: IUserRepository
     {
-        private static ISet<User> _users =new HashSet<User>()
-        {
-            new User("referee1@wp.pl","referee1","secret","salt","Observer"),
-            new User("referee2@wp.pl","referee2","secret","salt","Observer"),
-            new User("referee3@wp.pl","referee3","secret","salt","Observer"),
-        };
+        private static ISet<User> _users = new HashSet<User>();
+
 
         public async Task<User> GetAsync(Guid id)
             => await Task.FromResult(_users.SingleOrDefault(x => x.Id == id));

@@ -14,22 +14,22 @@ namespace RecordMaker.Core.Domain
         public string Salt { get; protected set; }
         public string Username { get; protected set; }
         public string FullName { get;protected set; }
-        public string Profession { get; protected set; }
+        public string Role { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
         protected User()
         {
         }
 
-        public User(string email, string username,
-            string password, string salt, string profession)
+        public User(Guid userId, string email, string username,
+            string password, string salt, string role)
         {
-            Id=Guid.NewGuid();
+            Id = userId;
             Email = email.ToLowerInvariant();
             Username = username;
             Password = password;
             Salt = salt;
-            Profession = profession;
+            Role = role;
             CreatedAt = DateTime.UtcNow;
         }
 

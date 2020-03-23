@@ -26,7 +26,6 @@ namespace RecordMaker.Api.Controllers
         public async Task<TableDto> Get(Guid id)
             => await _tableService.GetAsync(id);
 
-        [Authorize(Policy = "MustBeObserver")]
         [Route("all")]
         [HttpGet]
         public async Task<IEnumerable<TableDto>> GetAll()

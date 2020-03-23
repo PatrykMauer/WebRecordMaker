@@ -15,6 +15,7 @@ using RecordMaker.Infrastructure.Mappers;
 using RecordMaker.Infrastructure.Repositories;
 using RecordMaker.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Settings;
@@ -43,7 +44,7 @@ namespace RecordMaker.Api
                 p=>p.RequireRole("observer")));
             services.AddControllers();
             services.AddHttpClient();
-
+            services.AddMemoryCache();
             var key = Configuration
                 .GetSettings<JwtSettings>().Key;
 
@@ -74,16 +75,20 @@ namespace RecordMaker.Api
             builder.RegisterModule(new ContainerModule(Configuration));
         }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            ILoggerFactory loggerFactory, IHostApplicationLifetime appLifetime)
         {
-            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             app.UseRouting();
-
-            // Endpoint aware middleware. 
-            // Middleware can use metadata from the matched endpoint.
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
+            var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
+            if (generalSettings.SeedData)
+            {
+                var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+                dataInitializer.SeedAsync();
+            }
             // Execute the matched endpoint.
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
           //  appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());

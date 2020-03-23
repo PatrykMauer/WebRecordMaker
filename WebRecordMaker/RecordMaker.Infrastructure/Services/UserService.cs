@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
 using RecordMaker.Infrastructure.DTO;
@@ -29,7 +30,7 @@ namespace RecordMaker.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public async Task RegisterAsync(string email,string username, string password, string profession)
+        public async Task RegisterAsync(Guid userId, string email,string username, string password, string role)
         {
             var user = await _userRepository.GetAsync(email);
             if (user != null)
@@ -39,8 +40,24 @@ namespace RecordMaker.Infrastructure.Services
 
             var salt = _encrypter.GetSalt(password);
             var hash = _encrypter.GetHash(password, salt);
-            user=new User(email,username,hash,salt,profession);
+            user=new User(userId, email,username,hash,salt,role);
             await _userRepository.AddAsync(user);
+        }
+
+        public async Task LoginAsync(string email, string password)
+        {
+            var user = await _userRepository.GetAsync(email);
+            if (user==null)
+            {
+                throw new Exception("Invalid credentials");
+            }
+            
+            var hash = _encrypter.GetHash(user.Password, user.Salt);
+            if (user.Password == hash)
+            {
+                return;
+            }
+            throw new Exception("Invalid credentials");
         }
 
         public async Task UpdateEmail(string currentEmail, string newEmail)
@@ -52,6 +69,13 @@ namespace RecordMaker.Infrastructure.Services
             }
             user.ChangeEmail(newEmail);
             await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<string> GetRole(string email)
+        {
+            var user = await _userRepository.GetAsync(email);
+
+            return user.Role;
         }
     }
 }

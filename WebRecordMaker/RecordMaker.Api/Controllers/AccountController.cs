@@ -15,15 +15,6 @@ namespace RecordMaker.Api.Controllers
             _jwtHandler = jwtHandler;
         }
 
-        [HttpGet]
-        [Route("token")]
-        public IActionResult Get()
-        {
-            var token = _jwtHandler.CreateToken("referee1@wp.pl", "observer");
-
-            return Ok(token);
-        }
-        
         [HttpPut]
         [Route("password")]
         public async Task<IActionResult> Put(ChangeUserPassword command)
