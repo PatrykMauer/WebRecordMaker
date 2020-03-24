@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands;
+using RecordMaker.Infrastructure.Commands.Cells;
 using RecordMaker.Infrastructure.Commands.Tables;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.DTO;
@@ -34,7 +35,13 @@ namespace RecordMaker.Api.Controllers
         [HttpPost("")]
         public async Task Post([FromBody] CreateTable command)
         {
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
+        }
+        
+        [HttpPost("cell")]
+        public async Task Post([FromBody] CreateCell command)
+        {
+            await DispatchAsync(command);
         }
     }
 }

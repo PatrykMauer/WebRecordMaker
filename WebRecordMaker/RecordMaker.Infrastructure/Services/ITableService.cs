@@ -11,6 +11,7 @@ namespace RecordMaker.Infrastructure.Services
     {
     Task<TableDto> GetAsync(Guid id);
     Task<IEnumerable<TableDto>> GetAllAsync();
-    Task AddAsync(string size, List<Cell> cells);
+    Task AddAsync(Guid userId, string size);
+    Task AddCellAsync(Guid tableId, Guid userId, int rowNumber, char columnLetter, string text);
     }
 }

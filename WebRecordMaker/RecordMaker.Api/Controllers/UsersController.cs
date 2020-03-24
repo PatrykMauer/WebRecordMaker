@@ -26,9 +26,9 @@ namespace RecordMaker.Api.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] CreateUser command)
         {
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
 
-            return Ok();
+            return Created($"users/{command.Email}", null);
         }
     }
 }

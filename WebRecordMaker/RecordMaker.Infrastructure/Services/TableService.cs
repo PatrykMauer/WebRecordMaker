@@ -31,11 +31,22 @@ namespace RecordMaker.Infrastructure.Services
             return _mapper.Map<IEnumerable<Table>, IEnumerable<TableDto>>(tables);
         }
 
-        public async Task AddAsync(string size, List<Cell> cells)
+        public async Task AddAsync(Guid userId, string size)
         {
-           var table = new Table(size);
-           table.AddAllCells(cells);
+           var table = new Table(userId,size);
            await _tableRepository.AddAsync(table);
+        }
+
+        public async Task AddCellAsync(Guid tableId, Guid userId, int rowNumber, char columnLetter, string text)
+        {
+            var table = await _tableRepository.GetAsync(tableId);
+            if (table == null)
+            {
+                throw new Exception($"Table with id: {tableId} does not exist. First create a table");
+            }
+            table.AddCell(userId,rowNumber,columnLetter,text);
+            
+            await _tableRepository.UpdateAsync(table);
         }
     }
 }

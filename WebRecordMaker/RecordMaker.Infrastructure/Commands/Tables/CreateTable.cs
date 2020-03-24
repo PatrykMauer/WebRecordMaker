@@ -4,7 +4,7 @@ using RecordMaker.Infrastructure.Commands.Users;
 
 namespace RecordMaker.Infrastructure.Commands.Tables
 {
-    public class CreateTable:ICommand
+    public class CreateTable : AuthenticatedCommandBase
     {
         public string Size { get; set; }
 

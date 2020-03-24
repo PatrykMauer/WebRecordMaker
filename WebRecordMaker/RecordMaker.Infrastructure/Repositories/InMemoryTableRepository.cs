@@ -10,12 +10,8 @@ namespace RecordMaker.Infrastructure.Repositories
     public class InMemoryTableRepository:ITableRepository
     {
 
-        private static ISet<Table> _tables=new HashSet<Table>()
-        {
-            new Table( "10x10"),
-            new Table("11x11")
-        };
-
+        private static ISet<Table> _tables = new HashSet<Table>();
+        
         public async Task<Table> GetAsync(Guid id)
             => await Task.FromResult( _tables.SingleOrDefault(x => x.Id == id));
 

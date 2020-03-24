@@ -19,7 +19,7 @@ namespace RecordMaker.Api.Controllers
         [Route("password")]
         public async Task<IActionResult> Put(ChangeUserPassword command)
         {
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
 
             return NoContent();
         }
@@ -28,7 +28,7 @@ namespace RecordMaker.Api.Controllers
         [Route("email")]
         public async Task<IActionResult> Put(ChangeUserEmail command)
         {
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
 
             return NoContent();
         }

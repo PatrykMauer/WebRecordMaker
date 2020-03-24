@@ -30,7 +30,8 @@ namespace RecordMaker.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public async Task RegisterAsync(Guid userId, string email,string username, string password, string role)
+        public async Task RegisterAsync(Guid userId, string email,
+            string username, string password, string role)
         {
             var user = await _userRepository.GetAsync(email);
             if (user != null)
@@ -52,7 +53,7 @@ namespace RecordMaker.Infrastructure.Services
                 throw new Exception("Invalid credentials");
             }
             
-            var hash = _encrypter.GetHash(user.Password, user.Salt);
+            var hash = _encrypter.GetHash(password, user.Salt);
             if (user.Password == hash)
             {
                 return;

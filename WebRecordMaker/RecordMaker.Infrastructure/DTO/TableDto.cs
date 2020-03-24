@@ -9,5 +9,6 @@ namespace RecordMaker.Infrastructure.DTO
         public Guid Id { get;  set; }
         public string Size { get;  set; }
         public IEnumerable<Cell> Cells { get;  set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

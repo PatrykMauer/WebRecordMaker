@@ -37,8 +37,7 @@ namespace RecordMaker.Tests.Services
         public async Task invoking_add_async_should_invoke_add_async_on_repository()
         {
             var tableService=new TableService(_tableRepositoryMock.Object, _mapperMock.Object);
-            List<Cell> cells=new List<Cell>();
-            await tableService.AddAsync("10X10",cells);
+            await tableService.AddAsync(Guid.NewGuid(),"10X10");
             
             _tableRepositoryMock.Verify(x=>x.AddAsync(It.IsAny<Table>()),Times.Once);
         }
