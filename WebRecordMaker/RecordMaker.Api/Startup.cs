@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Settings;
+using RecordMaker.Api.Framework;
 
 namespace RecordMaker.Api
 {
@@ -82,7 +83,7 @@ namespace RecordMaker.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            app.UseExceptionHandlerMiddleware();
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
             if (generalSettings.SeedData)
             {
