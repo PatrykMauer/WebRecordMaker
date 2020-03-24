@@ -5,6 +5,7 @@ using AutoMapper;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
 using RecordMaker.Infrastructure.DTO;
+using RecordMaker.Infrastructure.Extensions;
 
 namespace RecordMaker.Infrastructure.Services
 {
@@ -22,13 +23,13 @@ namespace RecordMaker.Infrastructure.Services
         public async Task<TableDto> GetAsync(Guid id)
         {
             var table = await _tableRepository.GetAsync(id);
-            return _mapper.Map<Table, TableDto>(table);
+            return _mapper.Map<TableDto>(table);
         }
 
         public async Task<IEnumerable<TableDto>> GetAllAsync()
         {
             var tables =await  _tableRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<Table>, IEnumerable<TableDto>>(tables);
+            return _mapper.Map<IEnumerable<TableDto>>(tables);
         }
 
         public async Task AddAsync(Guid userId, string size)
@@ -39,11 +40,7 @@ namespace RecordMaker.Infrastructure.Services
 
         public async Task AddCellAsync(Guid tableId, Guid userId, int rowNumber, char columnLetter, string text)
         {
-            var table = await _tableRepository.GetAsync(tableId);
-            if (table == null)
-            {
-                throw new Exception($"Table with id: {tableId} does not exist. First create a table");
-            }
+          var table = await _tableRepository.GetOrFailAsync(tableId);
             table.AddCell(userId,rowNumber,columnLetter,text);
             
             await _tableRepository.UpdateAsync(table);

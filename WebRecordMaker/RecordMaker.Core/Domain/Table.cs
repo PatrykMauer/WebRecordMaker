@@ -37,10 +37,22 @@ namespace RecordMaker.Core.Domain
             UpdatedAt=DateTime.UtcNow;
         }
 
+        public void RemoveCell(int rowNumber, char columnLetter)
+        {
+            if (Cells.Any(x => x.RowNumber == rowNumber && x.ColumnLetter == columnLetter))
+            {
+                Cells.RemoveAll(x => x.RowNumber == rowNumber && x.ColumnLetter == columnLetter);
+                return;
+            }
+            throw new Exception($"Cell with coordinates {columnLetter}:{rowNumber} is empty." +
+                                $" Empty cell cannot be removed.");
+        }
+        
         public void AddAllCells(List<Cell> cells)
         {
             Cells = cells;
             UpdatedAt=DateTime.UtcNow;
         }
     }
+    //TODO: Restrain size of a List.
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
@@ -23,6 +24,10 @@ namespace RecordMaker.Api.Controllers
         public async  Task<UserDto> Get(string email)
             => await _userService.GetAsync(email);
 
+        [HttpGet("all")]
+        public async  Task<IEnumerable<UserDto>> Get()
+            => await _userService.GetAllAsync();
+        
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] CreateUser command)
         {

@@ -38,4 +38,5 @@ namespace RecordMaker.Core.Domain
             Email = newEmail;
         }
     }
+    //TODO: Validate Email, Password, Role.
 }
