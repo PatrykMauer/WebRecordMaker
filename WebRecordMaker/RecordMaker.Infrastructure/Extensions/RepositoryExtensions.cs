@@ -23,7 +23,18 @@ namespace RecordMaker.Infrastructure.Extensions
             var user = await repository.GetAsync(userId);
             if (user == null)
             {
-                throw new Exception($"Table with id: {userId} wa not found.");
+                throw new Exception($"User with id: {userId} was not found.");
+            }
+
+            return user;
+        }
+        
+        public static async Task<User> GetOrFailAsync(this IUserRepository repository, string email)
+        {
+            var user = await repository.GetAsync(email);
+            if (user == null)
+            {
+                throw new Exception($"User with email: {email} was not found.");
             }
 
             return user;

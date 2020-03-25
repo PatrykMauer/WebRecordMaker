@@ -8,29 +8,28 @@ using RecordMaker.Infrastructure.Services;
 
 namespace RecordMaker.Infrastructure.Handlers.Users
 {
-    public class LoginHandler : ICommandHandler<Login>
+    public class ForgotPasswordHandler : ICommandHandler<ForgotPassword>
     {
-
+        private readonly IMemoryCache _cache;
         private readonly IUserService _userService;
         private readonly IJwtHandler _jwtHandler;
-        private readonly IMemoryCache _cache;
+        private readonly IEmailSender _sender;
 
-
-        public LoginHandler(IUserService userService,
+        public ForgotPasswordHandler(IMemoryCache cache,
+            IUserService userService,
             IJwtHandler jwtHandler,
-            IMemoryCache cache)
+            IEmailSender sender)
         {
+            _cache = cache;
             _userService = userService;
             _jwtHandler = jwtHandler;
-            _cache = cache;
+            _sender = sender;
         }
-        
-        public async Task HandleAsync(Login command)
+        public async Task HandleAsync(ForgotPassword command)
         {
-            await _userService.LoginAsync(command.Email, command.Password);
-            var user = await _userService.GetAsync(command.Email);
-            var jwt = _jwtHandler.CreateLoginToken(user.Id, user.Role);
-            _cache.SetJwt(command.TokenId, jwt, TimeSpan.FromSeconds(5));
+           var user= await _userService.GetAsync(command.Email);
+           var jwt = _jwtHandler.CreateRecoveryToken(user.Id);
+           await _sender.SendEmail(jwt.Token);
         }
     }
 }

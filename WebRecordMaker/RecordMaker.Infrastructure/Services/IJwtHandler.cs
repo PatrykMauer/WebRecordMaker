@@ -5,6 +5,7 @@ namespace RecordMaker.Infrastructure.Services
 {
     public interface IJwtHandler
     {
-        JwtDto CreateToken(Guid userId, string role);
+        JwtDto CreateLoginToken(Guid userId, string role);
+        JwtDto CreateRecoveryToken(Guid userId);
     }
 }

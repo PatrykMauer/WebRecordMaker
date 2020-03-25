@@ -26,9 +26,15 @@ namespace RecordMaker.Infrastructure.Services
             _encrypter = encrypter;
         }
 
+        public async Task<UserDto> GetAsync(Guid userId)
+        {
+            var user = await _userRepository.GetOrFailAsync(userId);
+            return _mapper.Map<UserDto>(user);
+        }
+
         public async Task<UserDto> GetAsync(string email)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetOrFailAsync(email);
             return _mapper.Map<UserDto>(user);
         }
 
@@ -67,6 +73,16 @@ namespace RecordMaker.Infrastructure.Services
                 return;
             }
             throw new Exception("Invalid credentials");
+        }
+
+        public async Task RecoverPassword(Guid userId, string newPassword)
+        {
+           var user= await _userRepository.GetAsync(userId);
+           var salt = _encrypter.GetSalt(newPassword);
+           user.ChangeSalt(salt);
+           user.ChangePassword(_encrypter.GetHash(newPassword, salt));
+
+           await _userRepository.UpdateAsync(user);
         }
 
         public async Task UpdateEmail(Guid userId, string newEmail)

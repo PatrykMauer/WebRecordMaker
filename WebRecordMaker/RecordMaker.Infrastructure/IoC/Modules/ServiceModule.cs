@@ -25,6 +25,10 @@ namespace RecordMaker.Infrastructure.IoC.Modules
             builder.RegisterType<JwtHandler>()
                 .As<IJwtHandler>()
                 .SingleInstance();
+            
+            builder.RegisterType<FakeEmailSender>()
+                .As<IEmailSender>()
+                .SingleInstance();
         }
     }
     //TODO: Create Provider which gives possible names to Tables? Maybe available season? Maybe available referee? Some kind of a Dictionary

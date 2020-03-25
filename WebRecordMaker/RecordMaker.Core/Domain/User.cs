@@ -37,6 +37,15 @@ namespace RecordMaker.Core.Domain
         {
             Email = newEmail;
         }
+
+        public void ChangePassword(string password)
+        {
+            Password = password;
+        }
+        public void ChangeSalt(string salt)
+        {
+            Salt = salt;
+        }
     }
     //TODO: Validate Email, Password, Role.
 }
