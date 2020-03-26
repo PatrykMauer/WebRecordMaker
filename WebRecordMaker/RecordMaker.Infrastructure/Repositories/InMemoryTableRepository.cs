@@ -25,6 +25,9 @@ namespace RecordMaker.Infrastructure.Repositories
 
         public async Task UpdateAsync(Table table)
         {
+           var updatedTable =_tables.SingleOrDefault(x=>x.Id==table.Id);
+           updatedTable?.SetCells(table.Cells);
+           updatedTable?.SetSize(table.Size);
            await Task.CompletedTask;
         }
 

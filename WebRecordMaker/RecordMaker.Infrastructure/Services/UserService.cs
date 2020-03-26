@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
 using RecordMaker.Infrastructure.DTO;
+using RecordMaker.Infrastructure.Exceptions;
 using RecordMaker.Infrastructure.Extensions;
+using ErrorCodes = RecordMaker.Infrastructure.Exceptions.ErrorCodes;
 
 namespace RecordMaker.Infrastructure.Services
 {
@@ -50,7 +52,7 @@ namespace RecordMaker.Infrastructure.Services
             var user = await _userRepository.GetAsync(email);
             if (user != null)
             {
-                throw new Exception($"User with email '{email}' already exists.");
+                throw new ServiceException(ErrorCodes.EmailInUse,$"User with email '{email}' already exists.");
             }
 
             var salt = _encrypter.GetSalt(password);
@@ -64,7 +66,7 @@ namespace RecordMaker.Infrastructure.Services
             var user = await _userRepository.GetAsync(email);
             if (user==null)
             {
-                throw new Exception("Invalid credentials");
+                throw new ServiceException(ErrorCodes.InvalidCredentials,"Invalid credentials");
             }
             
             var hash = _encrypter.GetHash(password, user.Salt);
@@ -72,15 +74,15 @@ namespace RecordMaker.Infrastructure.Services
             {
                 return;
             }
-            throw new Exception("Invalid credentials");
+            throw new ServiceException(ErrorCodes.InvalidCredentials,"Invalid credentials");
         }
 
         public async Task RecoverPassword(Guid userId, string newPassword)
         {
            var user= await _userRepository.GetAsync(userId);
            var salt = _encrypter.GetSalt(newPassword);
-           user.ChangeSalt(salt);
-           user.ChangePassword(_encrypter.GetHash(newPassword, salt));
+           user.SetSalt(salt);
+           user.SetPassword(_encrypter.GetHash(newPassword, salt));
 
            await _userRepository.UpdateAsync(user);
         }
@@ -88,7 +90,7 @@ namespace RecordMaker.Infrastructure.Services
         public async Task UpdateEmail(Guid userId, string newEmail)
         {
             var user = await _userRepository.GetOrFailAsync(userId);
-            user.ChangeEmail(newEmail);
+            user.SetEmail(newEmail);
             await _userRepository.UpdateAsync(user);
         }
     }

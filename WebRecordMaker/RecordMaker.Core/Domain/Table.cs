@@ -26,6 +26,10 @@ namespace RecordMaker.Core.Domain
             Size = size;
         }
 
+        public void SetSize(string size)
+        {
+            Size = size;
+        }
         public void AddCell(Guid userId, int rowNumber, char columnLetter, string text)
         {
             var cell=new Cell(userId,rowNumber,columnLetter,text);
@@ -44,11 +48,11 @@ namespace RecordMaker.Core.Domain
                 Cells.RemoveAll(x => x.RowNumber == rowNumber && x.ColumnLetter == columnLetter);
                 return;
             }
-            throw new Exception($"Cell with coordinates {columnLetter}:{rowNumber} is empty." +
+            throw new DomainException(ErrorCodes.EmptyCell,$"Cell with coordinates {columnLetter}:{rowNumber} is empty." +
                                 $" Empty cell cannot be removed.");
         }
         
-        public void AddAllCells(List<Cell> cells)
+        public void SetCells(List<Cell> cells)
         {
             Cells = cells;
             UpdatedAt=DateTime.UtcNow;

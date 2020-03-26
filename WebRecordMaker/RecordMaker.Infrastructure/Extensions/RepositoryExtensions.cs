@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
+using RecordMaker.Infrastructure.Exceptions;
+using ErrorCodes = RecordMaker.Infrastructure.Exceptions.ErrorCodes;
 
 namespace RecordMaker.Infrastructure.Extensions
 {
@@ -12,7 +14,7 @@ namespace RecordMaker.Infrastructure.Extensions
             var table = await repository.GetAsync(tableId);
             if (table == null)
             {
-                throw new Exception($"Table with id: {tableId} was not found.");
+                throw new ServiceException(ErrorCodes.TableNotFound,$"Table with id: {tableId} was not found.");
             }
 
             return table;
@@ -23,7 +25,7 @@ namespace RecordMaker.Infrastructure.Extensions
             var user = await repository.GetAsync(userId);
             if (user == null)
             {
-                throw new Exception($"User with id: {userId} was not found.");
+                throw new ServiceException(ErrorCodes.UserNotFound,"User with id: {userId} was not found.");
             }
 
             return user;
@@ -34,7 +36,7 @@ namespace RecordMaker.Infrastructure.Extensions
             var user = await repository.GetAsync(email);
             if (user == null)
             {
-                throw new Exception($"User with email: {email} was not found.");
+                throw new ServiceException(ErrorCodes.UserNotFound,$"User with email: {email} was not found.");
             }
 
             return user;

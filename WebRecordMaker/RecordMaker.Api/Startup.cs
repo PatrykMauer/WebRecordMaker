@@ -17,6 +17,7 @@ using RecordMaker.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Web;
 using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Settings;
 using RecordMaker.Api.Framework;
@@ -40,6 +41,7 @@ namespace RecordMaker.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddOptions();
             services.AddAuthorization(x=>x.AddPolicy("MustBeObserver",
                 p=>p.RequireRole("observer")));
@@ -69,6 +71,11 @@ namespace RecordMaker.Api
                         ValidateAudience = false
                     };
                 });
+            // services.AddLogging(builder =>
+            // {
+            //     builder.SetMinimumLevel(LogLevel.Trace);
+            //     builder.AddNLog("nlog.config");
+            // });
         } 
         
         public void ConfigureContainer(ContainerBuilder builder)

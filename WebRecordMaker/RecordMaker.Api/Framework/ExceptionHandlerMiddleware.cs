@@ -3,6 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using RecordMaker.Core.Domain;
+using RecordMaker.Infrastructure.Exceptions;
 
 namespace RecordMaker.Api.Framework
 {
@@ -37,7 +39,17 @@ namespace RecordMaker.Api.Framework
                 case Exception e when exceptionType == typeof(UnauthorizedAccessException):
                     statusCode = HttpStatusCode.Unauthorized;
                     break;
-                //TODO:Custom exception
+
+                case ServiceException e when exceptionType == typeof(ServiceException):
+                    statusCode = HttpStatusCode.BadRequest;
+                    errorCode = e.Code;
+                    break;
+                
+                case DomainException e when exceptionType == typeof(DomainException):
+                    statusCode = HttpStatusCode.BadRequest;
+                    errorCode = e.Code;
+                    break;
+                
                 
                 default:
                     statusCode = HttpStatusCode.InternalServerError;

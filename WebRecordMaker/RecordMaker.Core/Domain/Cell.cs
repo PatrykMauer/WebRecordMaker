@@ -21,6 +21,10 @@ namespace RecordMaker.Core.Domain
 
         private void SetUserId(Guid userId)
         {
+            if (userId == Guid.Empty)
+            {
+                throw new DomainException(ErrorCodes.InvalidUserId, "UserId can not be empty");
+            }
             UserId = userId;
         }
         

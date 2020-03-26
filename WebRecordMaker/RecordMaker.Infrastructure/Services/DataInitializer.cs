@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Fluent;
 using RecordMaker.Core.Domain;
 
 namespace RecordMaker.Infrastructure.Services
@@ -9,21 +11,19 @@ namespace RecordMaker.Infrastructure.Services
     public class DataInitializer : IDataInitializer
     {
         private readonly IUserService _userService;
-        private readonly ILogger<DataInitializer> _logger;
         private readonly ITableService _tableService;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public DataInitializer(IUserService userService,
-            ILogger<DataInitializer> logger,
             ITableService tableService)
         {
             _userService = userService;
-            _logger = logger;
             _tableService = tableService;
         }
         
         public async Task SeedAsync()
         {
-           _logger.LogInformation("Initializing data...");
+           Logger.Trace("Initializing data...");
            var tasks = new List<Task>();
            for (var i = 1; i <=10; i++)
            {
@@ -42,7 +42,7 @@ namespace RecordMaker.Infrastructure.Services
            }
 
            await Task.WhenAll(tasks);
-           _logger.LogInformation("Data has been initialized.");
+           Logger.Trace("Data has been initialized.");
         }
     }
 }
