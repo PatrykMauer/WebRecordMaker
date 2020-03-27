@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using RecordMaker.Infrastructure.Commands;
-using RecordMaker.Infrastructure.Commands.Users;
+using RecordMaker.Infrastructure.Commands.Accounts;
 using RecordMaker.Infrastructure.Extensions;
 
 namespace RecordMaker.Api.Controllers

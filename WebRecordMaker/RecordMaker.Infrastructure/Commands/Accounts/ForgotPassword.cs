@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.NetworkInformation;
 
-namespace RecordMaker.Infrastructure.Commands.Users
+namespace RecordMaker.Infrastructure.Commands.Accounts
 {
     public class ForgotPassword : ICommand
     {

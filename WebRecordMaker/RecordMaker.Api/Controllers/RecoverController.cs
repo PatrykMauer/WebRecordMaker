@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using RecordMaker.Infrastructure.Commands;
-using RecordMaker.Infrastructure.Commands.Users;
+using RecordMaker.Infrastructure.Commands.Accounts;
 
 namespace RecordMaker.Api.Controllers
 {

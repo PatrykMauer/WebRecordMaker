@@ -5,20 +5,21 @@ using RecordMaker.Infrastructure.Services;
 
 namespace RecordMaker.Infrastructure.Handlers.Users
 {
-    public class ChangeUserEmailHandler:ICommandHandler<ChangeUserEmail>
+    public class ChangeUserEmailHandler : ICommandHandler<ChangeUserEmail>
     {
+        private readonly IHandler _handler;
         private readonly IUserService _userService;
-        
-        public ChangeUserEmailHandler(IUserService userService)
+
+        public ChangeUserEmailHandler(IHandler handler, IUserService userService)
         {
+            _handler = handler;
             _userService = userService;
         }
 
         public async Task HandleAsync(ChangeUserEmail command)
-        {
-            await Task.CompletedTask;
-
-            // await _userService.UpdateEmail(command.CurrentEmail,command.NewEmail);
-        }
+            => await _handler
+                .Run(async () => await _userService.UpdateEmail(command.UserId, command.NewEmail))
+                .ExecuteAsync();
+        
     }
 }

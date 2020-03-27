@@ -46,7 +46,7 @@ namespace RecordMaker.Tests.EndToEnd.Controllers
                 Email = "testEmail@wp.pl",
                 Password = "secret",
                 Username = "TestUserName",
-                Profession = "Observer"
+                Role = "Observer"
             };
             var payload = GetPayload(command);
             var response = await Client.PutAsync("users", payload);

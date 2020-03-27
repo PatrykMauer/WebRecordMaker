@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RecordMaker.Infrastructure.Commands.Users
+namespace RecordMaker.Infrastructure.Commands.Accounts
 {
     public class RecoverPassword : AuthenticatedCommandBase
     {
