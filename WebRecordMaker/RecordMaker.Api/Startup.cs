@@ -43,8 +43,12 @@ namespace RecordMaker.Api
         {
            
             services.AddOptions();
-            services.AddAuthorization(x=>x.AddPolicy("MustBeObserver",
-                p=>p.RequireRole("observer")));
+            services.AddAuthorization(x=>
+            {
+                x.AddPolicy("observer", p => p.RequireRole("observer"));
+                x.AddPolicy("referee", p => p.RequireRole("referee"));
+                x.AddPolicy("admin", p => p.RequireRole("admin"));
+            });
             services.AddControllers();
             services.AddHttpClient();
             services.AddMemoryCache();

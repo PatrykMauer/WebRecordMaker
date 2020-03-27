@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
@@ -6,6 +7,7 @@ using RecordMaker.Infrastructure.Services;
 
 namespace RecordMaker.Api.Controllers
 {
+    [Authorize]
     public class AccountController : ApiControllerBase
     {
         private readonly IJwtHandler _jwtHandler;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
@@ -20,10 +21,12 @@ namespace RecordMaker.Api.Controllers
             _userService = userService;
         }
 
+        [Authorize(Policy ="admin")]
         [HttpGet("{email}")]
         public async  Task<UserDto> Get(string email)
             => await _userService.GetAsync(email);
 
+        [Authorize(Policy ="admin")]
         [HttpGet("all")]
         public async  Task<IEnumerable<UserDto>> Get()
             => await _userService.GetAllAsync();
