@@ -21,6 +21,7 @@ using NLog.Web;
 using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Settings;
 using RecordMaker.Api.Framework;
+using RecordMaker.Infrastructure.Mongo;
 
 namespace RecordMaker.Api
 {
@@ -95,13 +96,14 @@ namespace RecordMaker.Api
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseExceptionHandlerMiddleware();
+            MongoConfiguration.Initialize();
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
             if (generalSettings.SeedData)
             {
                 var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
                 dataInitializer.SeedAsync();
             }
-            // Execute the matched endpoint.
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
           //  appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

@@ -26,7 +26,7 @@ namespace RecordMaker.Api.Controllers
         public async  Task<UserDto> Get(string email)
             => await _userService.GetAsync(email);
 
-        [Authorize(Policy ="admin")]
+       // [Authorize(Policy ="admin")]
         [HttpGet("all")]
         public async  Task<IEnumerable<UserDto>> Get()
             => await _userService.GetAllAsync();
