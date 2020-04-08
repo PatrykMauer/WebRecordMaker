@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
 using Autofac;
+using Microsoft.Extensions.Caching.Memory;
 using MongoDB.Driver;
 using RecordMaker.Core.Repositories;
 using RecordMaker.Infrastructure.Mongo;
 using RecordMaker.Infrastructure.Repositories;
+using RecordMaker.Infrastructure.Repositories.Decorators;
 
 namespace RecordMaker.Infrastructure.IoC.Modules
 {
@@ -36,6 +38,8 @@ namespace RecordMaker.Infrastructure.IoC.Modules
                 .Where(x=>x.IsAssignableTo<IMongoRepository>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+          
         }
     }
 }

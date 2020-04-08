@@ -2,6 +2,7 @@
 using Autofac;
 using RecordMaker.Core.Repositories;
 using RecordMaker.Infrastructure.Commands;
+using RecordMaker.Infrastructure.Repositories.Decorators;
 
 namespace RecordMaker.Infrastructure.IoC.Modules
 {
@@ -17,6 +18,8 @@ namespace RecordMaker.Infrastructure.IoC.Modules
                 .Where(x=>x.IsAssignableTo<IRepository>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+            
+            builder.RegisterDecorator(typeof(CachingDecorator), typeof(IRepository));
         }
     }
 }
