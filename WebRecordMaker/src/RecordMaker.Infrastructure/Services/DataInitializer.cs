@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -23,25 +24,29 @@ namespace RecordMaker.Infrastructure.Services
         
         public async Task SeedAsync()
         {
+            var users = await _userService.GetAllAsync();
+            if (users.Any())
+            {
+                return;
+            }
+            
            Logger.Trace("Initializing data...");
-           var tasks = new List<Task>();
            for (var i = 1; i <=10; i++)
            {
                var userId = Guid.NewGuid();
                var username = $"user{i}";
-              tasks.Add(_userService.RegisterAsync(userId, $"{username}@test.com",
-                  username, "secret", "Referee"));
+              await _userService.RegisterAsync(userId, $"{username}@test.com",
+                  username, "secret", "referee");
            }
            for (var i = 1; i <=3; i++)
            {
                var userId = Guid.NewGuid();
                var username = $"observer{i}";
-               tasks.Add(_userService.RegisterAsync(userId, $"{username}@test.com",
-                   username, "secret", "Admin"));
-               tasks.Add(_tableService.AddAsync(userId, "10,x10"));
+               await _userService.RegisterAsync(userId, $"{username}@test.com",
+                   username, "secret", "admin");
+               await _tableService.AddAsync(userId, "10,x10");
            }
 
-           await Task.WhenAll(tasks);
            Logger.Trace("Data has been initialized.");
         }
     }

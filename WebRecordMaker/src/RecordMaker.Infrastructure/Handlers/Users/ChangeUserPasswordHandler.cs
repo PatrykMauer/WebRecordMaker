@@ -19,7 +19,8 @@ namespace RecordMaker.Infrastructure.Handlers.Users
             public async Task HandleAsync(ChangeUserPassword command)
                 =>await  _handler
                     .Run(async () => await Task.CompletedTask)
-                    .ExecuteAsync();
+                    .Next()
+                    .ExecuteAllAsync();
 
         }
 }

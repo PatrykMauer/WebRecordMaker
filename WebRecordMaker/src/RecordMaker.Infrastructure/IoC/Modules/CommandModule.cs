@@ -20,6 +20,7 @@ namespace RecordMaker.Infrastructure.IoC.Modules
             builder.RegisterType<CommandDispatcher>()
                 .As<ICommandDispatcher>()
                 .InstancePerLifetimeScope();
+                
         }
     }
 }

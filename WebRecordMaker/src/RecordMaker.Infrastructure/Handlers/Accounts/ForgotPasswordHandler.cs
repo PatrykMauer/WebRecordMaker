@@ -36,7 +36,8 @@ namespace RecordMaker.Infrastructure.Handlers.Accounts
                     var jwt = _jwtHandler.CreateRecoveryToken(user.Id);
                     await _sender.SendEmail(jwt.Token);
                 })
-                .ExecuteAsync();
+                .Next()
+                .ExecuteAllAsync();
 
     }
 }

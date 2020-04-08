@@ -24,7 +24,8 @@ namespace RecordMaker.Infrastructure.Handlers.Cells
                     await _tableService.AddCellAsync(command.TableId, command.UserId,
                         command.RowNumber, command.ColumnLetter, command.Text);
                 })
-                .ExecuteAsync();
+                .Next()
+                .ExecuteAllAsync();
 
 
     }

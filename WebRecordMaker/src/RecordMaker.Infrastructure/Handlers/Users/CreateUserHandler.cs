@@ -21,7 +21,8 @@ namespace RecordMaker.Infrastructure.Handlers.Users
             => await _handler
                 .Run(async () => await _userService.RegisterAsync(Guid.NewGuid(), command.Email,
                     command.Username, command.Password, command.Role))
-                .ExecuteAsync();
+                .Next()
+                .ExecuteAllAsync();
 
     }
 }

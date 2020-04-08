@@ -1,0 +1,23 @@
+﻿version: "2"
+
+services: 
+  api:
+    build: ../src/RecordMaker.Api
+    links:
+      - mongo
+    ports:
+      - '5000:5000'
+        
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - '27017:27017'
+
+volumes:
+  mongodb_data:
+    driver: local

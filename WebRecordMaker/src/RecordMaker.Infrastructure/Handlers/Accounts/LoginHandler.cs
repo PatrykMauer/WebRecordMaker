@@ -26,7 +26,9 @@ namespace RecordMaker.Infrastructure.Handlers.Accounts
         }
 
         public async Task HandleAsync(Login command)
-            =>await _handler.Run(async () => await _userService.LoginAsync(command.Email, command.Password))
+            => await _handler
+                .Run(async () => await _userService.LoginAsync(command.Email, command.Password))
+                .OnCustomError((e) => throw e)
                 .Next()
                 .Run((async () =>
                 {
@@ -34,7 +36,8 @@ namespace RecordMaker.Infrastructure.Handlers.Accounts
                     var jwt = _jwtHandler.CreateLoginToken(user.Id, user.Role);
                     _cache.SetJwt(command.TokenId, jwt, TimeSpan.FromSeconds(5));
                 }))
-                .ExecuteAsync();
+                .Next()
+                .ExecuteAllAsync();
         
     }
 }

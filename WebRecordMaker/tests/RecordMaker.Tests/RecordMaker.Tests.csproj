@@ -12,11 +12,12 @@
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+        <PackageReference Include="AutoMapper" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RecordMaker.Core\RecordMaker.Core.csproj" />
-      <ProjectReference Include="..\RecordMaker.Infrastructure\RecordMaker.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\RecordMaker.Infrastructure\RecordMaker.Infrastructure.csproj" />
     </ItemGroup>
+    
 
 </Project>

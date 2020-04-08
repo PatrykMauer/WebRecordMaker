@@ -19,6 +19,7 @@ namespace RecordMaker.Infrastructure.Handlers.Tables
         public async Task HandleAsync(CreateTable command)
             => await _handler
                 .Run(async () => await _tableService.AddAsync(command.UserId, command.Size))
-                .ExecuteAsync();
+                .Next()
+                .ExecuteAllAsync();
     }
 }
