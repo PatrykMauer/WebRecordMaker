@@ -19,7 +19,7 @@ namespace RecordMaker.Infrastructure.IoC.Modules
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
             
-            builder.RegisterDecorator(typeof(CachingDecorator), typeof(IRepository));
+            builder.RegisterDecorator(typeof(CachingDecorator), typeof(IUserRepository));
         }
     }
 }

@@ -12,6 +12,7 @@ namespace RecordMaker.Infrastructure.Repositories.Decorators
     {
         private readonly IUserRepository _repository;
         private readonly IMemoryCache _cache;
+        
 
         public CachingDecorator(IUserRepository repository, IMemoryCache cache)
         {
@@ -21,25 +22,27 @@ namespace RecordMaker.Infrastructure.Repositories.Decorators
 
         public async Task<User> GetAsync(Guid id)
         {
-            var user = await _repository.GetAsync(id);
-            _cache.Set("User",user,TimeSpan.FromMinutes(1));
+            if (_cache.Get(nameof(User)) is User user) return user;
+            user = await _repository.GetAsync(id);
+            _cache.Set(nameof(User), user, TimeSpan.FromMinutes(1));
 
             return user;
         }
 
         public async Task<User> GetAsync(string email)
         {
-            var user = await _repository.GetAsync(email);
-            _cache.Set("User",user,TimeSpan.FromMinutes(1));
+            if (_cache.Get(nameof(User)) is User user) return user;
+             user = await _repository.GetAsync(email);
+            _cache.Set(nameof(User),user,TimeSpan.FromMinutes(1));
 
             return user;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var user = await _repository.GetAllAsync();
-            var users = user.ToList();
-            _cache.Set("Users",users,TimeSpan.FromMinutes(1));
+            if (_cache.Get("Users") is IEnumerable<User> users) return users;
+             users = await _repository.GetAllAsync();
+             _cache.Set("Users",users,TimeSpan.FromMinutes(1));
 
             return users;
         }
