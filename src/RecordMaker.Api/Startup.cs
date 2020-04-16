@@ -98,7 +98,7 @@ namespace RecordMaker.Api
             app.UseExceptionHandlerMiddleware();
             MongoConfiguration.Initialize();
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
-            if (generalSettings.SeedData)
+            if (generalSettings.SeedData) 
             {
                 var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
                 dataInitializer.SeedAsync();
