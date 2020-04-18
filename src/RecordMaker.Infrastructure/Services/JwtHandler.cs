@@ -16,7 +16,7 @@ namespace RecordMaker.Infrastructure.Services
 
         public JwtHandler(JwtSettings settings)
         {
-            _settings = settings;
+            _settings = settings ?? throw new ArgumentNullException($"JwtSettings cannot be null");
         }
         
         public JwtDto CreateLoginToken(Guid userId, string role)
