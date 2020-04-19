@@ -18,7 +18,7 @@ namespace RecordMaker.Infrastructure.Handlers.Users
 
         public async Task HandleAsync(ChangeUserEmail command)
             => await _handler
-                .Run(async () => await _userService.UpdateEmail(command.UserId, command.NewEmail))
+                .Run(async () => await _userService.UpdateEmailAsync(command.UserId, command.NewEmail))
                 .Next()
                 .ExecuteAllAsync();
         

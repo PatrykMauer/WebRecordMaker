@@ -77,7 +77,7 @@ namespace RecordMaker.Infrastructure.Services
             throw new ServiceException(ErrorCodes.InvalidCredentials,"Invalid credentials");
         }
 
-        public async Task RecoverPassword(Guid userId, string newPassword)
+        public async Task RecoverPasswordAsync(Guid userId, string newPassword)
         {
            var user= await _userRepository.GetAsync(userId);
            var salt = _encrypter.GetSalt(newPassword);
@@ -87,7 +87,7 @@ namespace RecordMaker.Infrastructure.Services
            await _userRepository.UpdateAsync(user);
         }
 
-        public async Task UpdateEmail(Guid userId, string newEmail)
+        public async Task UpdateEmailAsync(Guid userId, string newEmail)
         {
             var user = await _userRepository.GetOrFailAsync(userId);
             user.SetEmail(newEmail);

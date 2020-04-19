@@ -20,7 +20,7 @@ namespace RecordMaker.Infrastructure.Handlers.Accounts
 
         public async Task HandleAsync(RecoverPassword command)
             => await _handler
-                .Run(async () => await _userService.RecoverPassword(command.UserId, command.NewPassword))
+                .Run(async () => await _userService.RecoverPasswordAsync(command.UserId, command.NewPassword))
                 .Next()
                 .ExecuteAllAsync();
     }

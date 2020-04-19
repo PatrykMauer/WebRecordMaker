@@ -13,7 +13,7 @@ namespace RecordMaker.Infrastructure.Services
 
         Task RegisterAsync(Guid userId, string email,string username, string password, string role);
         Task LoginAsync(string email, string password);
-        Task RecoverPassword(Guid userId, string newPassword);
-        Task UpdateEmail(Guid userId, string newEmail);
+        Task RecoverPasswordAsync(Guid userId, string newPassword);
+        Task UpdateEmailAsync(Guid userId, string newEmail);
     }
 }
