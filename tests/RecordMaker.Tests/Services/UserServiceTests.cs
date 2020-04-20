@@ -183,5 +183,35 @@ namespace RecordMaker.Tests.Services
             
             _userRepositoryMock.Verify(x=>x.UpdateAsync(It.IsAny<User>()),Times.Once);
         }
+
+        [Fact]
+        public async Task update_async_should_invoke_update_async_on_repository()
+        {
+            var userId = Guid.NewGuid();
+            var user = new User(userId, "test@email.com", "test",
+                "secret", "salt", "test");
+            
+            _userRepositoryMock.Setup(x => x.GetAsync(userId))
+                .ReturnsAsync(user);
+            
+            await _userService.UpdateAsync(userId, "newtest@email.com");
+            
+            _userRepositoryMock.Verify(x=>x.UpdateAsync(It.IsAny<User>()),Times.Once);
+        }
+        
+        [Fact]
+        public async Task update_async_should_update_email()
+        {
+            var userId = Guid.NewGuid();
+            var user = new User(userId, "test@email.com", "test",
+                "secret", "salt", "test");
+            
+            _userRepositoryMock.Setup(x => x.GetAsync(userId))
+                .ReturnsAsync(user);
+            
+            await _userService.UpdateAsync(userId, "newtest@email.com");
+
+            user.Email.Should().Be("newtest@email.com");
+        }
     }
 }
