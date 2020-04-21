@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\RecordMaker.Api\RecordMaker.Api.csproj" />
       <ProjectReference Include="..\..\src\RecordMaker.Infrastructure\RecordMaker.Infrastructure.csproj" />
     </ItemGroup>
     

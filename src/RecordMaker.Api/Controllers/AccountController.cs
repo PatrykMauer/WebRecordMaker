@@ -10,11 +10,8 @@ namespace RecordMaker.Api.Controllers
     [Authorize]
     public class AccountController : ApiControllerBase
     {
-        private readonly IJwtHandler _jwtHandler;
-        public AccountController(ICommandDispatcher commandDispatcher,
-            IJwtHandler jwtHandler) : base(commandDispatcher)
+        public AccountController(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
-            _jwtHandler = jwtHandler;
         }
 
         [HttpPut]

@@ -194,7 +194,7 @@ namespace RecordMaker.Tests.Services
             _userRepositoryMock.Setup(x => x.GetAsync(userId))
                 .ReturnsAsync(user);
             
-            await _userService.UpdateAsync(userId, "newtest@email.com");
+            await _userService.UpdateEmailAsync(userId, "newtest@email.com");
             
             _userRepositoryMock.Verify(x=>x.UpdateAsync(It.IsAny<User>()),Times.Once);
         }
@@ -209,7 +209,7 @@ namespace RecordMaker.Tests.Services
             _userRepositoryMock.Setup(x => x.GetAsync(userId))
                 .ReturnsAsync(user);
             
-            await _userService.UpdateAsync(userId, "newtest@email.com");
+            await _userService.UpdateEmailAsync(userId, "newtest@email.com");
 
             user.Email.Should().Be("newtest@email.com");
         }
