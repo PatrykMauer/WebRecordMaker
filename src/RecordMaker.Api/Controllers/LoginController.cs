@@ -24,7 +24,6 @@ namespace RecordMaker.Api.Controllers
             command.TokenId = Guid.NewGuid();
            await DispatchAsync(command);
            var jwt = _cache.GetJwt(command.TokenId);
-
            return Ok(jwt);
         }
     }
