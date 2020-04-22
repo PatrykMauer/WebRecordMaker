@@ -37,11 +37,10 @@ namespace RecordMaker.Tests.Controllers
         [Fact]
         public async Task post_should_return_ok_with_jwt_token()
         {
-            var tokenId = Guid.NewGuid();
-            var command = new Login {TokenId = tokenId};
+            var command = new Login();
             
             var response = await _controller.Post(command);
-            
+
             response.Should().BeOfType<OkObjectResult>();
         }
     }
