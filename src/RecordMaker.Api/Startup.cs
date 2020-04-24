@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +16,15 @@ using RecordMaker.Infrastructure.Mappers;
 using RecordMaker.Infrastructure.Repositories;
 using RecordMaker.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NLog.Web;
 using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Settings;
 using RecordMaker.Api.Framework;
+using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Mongo;
 
 namespace RecordMaker.Api
@@ -42,10 +46,20 @@ namespace RecordMaker.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(o=>
+                    o.Filters.Add<ValidationFilter>())
+                .AddFluentValidation(cfg=>
+                    cfg.RegisterValidatorsFromAssemblyContaining<ICommand>());
             services.AddHttpClient();
             services.AddMemoryCache();
             services.AddJwtAuthorization();
+            services.AddSwaggerGen(o =>
+                o.SwaggerDoc("v1",
+                    new OpenApiInfo
+            {
+                Title = "RecordMaker API",
+                Version = "v1"
+            }));
             // services.AddLogging(builder =>
             // {
             //     builder.SetMinimumLevel(LogLevel.Trace);
@@ -73,7 +87,15 @@ namespace RecordMaker.Api
                 var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
                 dataInitializer.SeedAsync();
             }
-            
+ 
+            app.UseSwagger();
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint(
+                    "/swagger/v1/swagger.json",
+                    "RecordMaker API");
+                    setupAction.RoutePrefix="";
+            });
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

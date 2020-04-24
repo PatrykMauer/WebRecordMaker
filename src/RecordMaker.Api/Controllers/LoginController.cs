@@ -20,7 +20,7 @@ namespace RecordMaker.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Login command)
-        { 
+        {
             command.TokenId = Guid.NewGuid();
            await DispatchAsync(command);
            var jwt = _cache.GetJwt(command.TokenId);

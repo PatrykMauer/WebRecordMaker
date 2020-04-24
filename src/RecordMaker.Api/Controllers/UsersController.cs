@@ -19,7 +19,8 @@ namespace RecordMaker.Api.Controllers
         {
             _userService = userService;
         }
-
+        
+        
         [Authorize(Policy ="admin")]
         [HttpGet("{email}")]
         public async  Task<UserDto> Get(string email)

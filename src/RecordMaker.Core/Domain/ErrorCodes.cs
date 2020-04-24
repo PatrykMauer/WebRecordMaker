@@ -8,7 +8,9 @@
         public static string InvalidRole => "invalid_role";
         public static string InvalidPassword => "invalid_password";
         public static string InvalidUserId => "invalid_user_id";
+        public static string InvalidInput => "invalid_input";
         public static string EmptyCell => "empty_cell";
+
 
     }
 }
