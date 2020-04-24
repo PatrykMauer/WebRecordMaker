@@ -36,7 +36,7 @@ namespace RecordMaker.Infrastructure.Services
                var userId = Guid.NewGuid();
                var username = $"user{i}";
               await _userService.RegisterAsync(userId, $"{username}@test.com",
-                  username, "secret", "referee");
+                  username, "Str@ngPassword1", "referee");
            }
            for (var i = 1; i <=3; i++)
            {
