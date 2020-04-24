@@ -6,7 +6,6 @@ using RecordMaker.Infrastructure.Commands;
 using RecordMaker.Infrastructure.Commands.Users;
 using RecordMaker.Infrastructure.DTO;
 using RecordMaker.Infrastructure.Services;
-using RecordMaker.Infrastructure.Settings;
 
 namespace RecordMaker.Api.Controllers
 {

@@ -31,8 +31,8 @@ namespace RecordMaker.Api
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange:true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -42,40 +42,10 @@ namespace RecordMaker.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
-           
-            services.AddOptions();
-            services.AddAuthorization(x=>
-            {
-                x.AddPolicy("observer", p => p.RequireRole("observer"));
-                x.AddPolicy("referee", p => p.RequireRole("referee"));
-                x.AddPolicy("admin", p => p.RequireRole("admin"));
-            });
             services.AddControllers();
             services.AddHttpClient();
             services.AddMemoryCache();
-            var key = Configuration
-                .GetSettings<JwtSettings>().Key;
-
-            var issuer = Configuration
-                .GetSettings<JwtSettings>().Issuer;
-
-            services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-                        ValidIssuer = issuer,
-                        ValidateAudience = false
-                    };
-                });
+            services.AddJwtAuthorization();
             // services.AddLogging(builder =>
             // {
             //     builder.SetMinimumLevel(LogLevel.Trace);
@@ -105,7 +75,7 @@ namespace RecordMaker.Api
             }
             
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-          //  appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }

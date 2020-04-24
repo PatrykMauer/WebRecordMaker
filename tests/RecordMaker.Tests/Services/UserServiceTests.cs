@@ -34,6 +34,21 @@ namespace RecordMaker.Tests.Services
         }
           
         [Fact]
+        public async Task get_async_should_return_userDto()
+        {
+            var userId = Guid.NewGuid();
+            var user = new User(userId, "obserer@wp.pl",
+                "observ", "secret", "salt", "Observer");
+            _userRepositoryMock.Setup(x => x.GetAsync(userId))
+                .ReturnsAsync(user);
+
+            _mapperMock.Setup(x => x.Map<UserDto>(user)).Returns(new UserDto());
+            var userDto = await _userService.GetAsync(userId);
+
+            userDto.Should().BeOfType<UserDto>();
+        }
+        
+        [Fact]
         public async Task get_async_when_not_finding_user_should_throw_service_exception_with_code_user_not_found()
         {
             _userService.Invoking(async x =>await x.GetAsync("email@email.com"))
@@ -54,7 +69,20 @@ namespace RecordMaker.Tests.Services
             
             await _userService.GetAsync("email@email.com");
             
-            _userRepositoryMock.Verify(x=>x.GetAsync(It.IsAny<string>()),Times.Once());
+            _userRepositoryMock.Verify(x=>x.GetAsync("email@email.com"),Times.Once());
+        }
+        
+        [Fact]
+        public async Task get_async_by_id_should_invoke_get_async_on_repository()
+        {
+            var userId =new Guid();
+            _userRepositoryMock.Setup(x => x.GetAsync(userId))
+                .ReturnsAsync(new User(Guid.NewGuid(),"obserer@wp.pl",
+                    "observ", "secret","salt", "Observer"));
+            
+            await _userService.GetAsync(userId);
+            
+            _userRepositoryMock.Verify(x=>x.GetAsync(userId),Times.Once());
         }
 
         [Fact]
@@ -134,6 +162,23 @@ namespace RecordMaker.Tests.Services
                     x.LoginAsync("test@email.com", "secret"))
                 .Should().NotThrow();
 
+            await Task.CompletedTask;
+        }
+        
+        [Fact]
+        public async Task login_async_with_wrong_password_should_throw_service_exception_with_invalid_credentials_code()
+        {
+            _userRepositoryMock.Setup(x => x.GetAsync("test@email.com"))
+                .ReturnsAsync(new User(Guid.NewGuid(), "test@email.com", "test",
+                    "correct_password", "salt", "test"));
+
+            _encrypterMock.Setup(x => x.GetHash("wrong_password", "salt"))
+                .Returns("wrong_password");
+            
+            _userService.Invoking(x =>
+                    x.LoginAsync("test@email.com", "wrong_password"))
+                .Should().Throw<ServiceException>().Which.Code.Should().Be(ErrorCodes.InvalidCredentials);
+    
             await Task.CompletedTask;
         }
 

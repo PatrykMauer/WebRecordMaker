@@ -14,6 +14,8 @@ namespace RecordMaker.Infrastructure.Mongo
             {
                 return;
             }
+
+            _initialized = true;
         }
 
         private static void RegisterConventions()

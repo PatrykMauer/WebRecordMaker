@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using RecordMaker.Core.Domain;
 using RecordMaker.Core.Repositories;
+using RecordMaker.Infrastructure.Exceptions;
+using RecordMaker.Infrastructure.Extensions;
 using RecordMaker.Infrastructure.Services;
 using Xunit;
+using ErrorCodes = RecordMaker.Infrastructure.Exceptions.ErrorCodes;
 
 namespace RecordMaker.Tests.Services
 {
@@ -40,6 +43,32 @@ namespace RecordMaker.Tests.Services
             await tableService.AddAsync(Guid.NewGuid(),"10X10");
             
             _tableRepositoryMock.Verify(x=>x.AddAsync(It.IsAny<Table>()),Times.Once);
+        }
+        
+        [Fact]
+        public async Task invoking_add_cell_async_with_not_existing_tableId_should_throw_service_exception_not_found()
+        {
+            var tableService=new TableService(_tableRepositoryMock.Object, _mapperMock.Object);
+            
+             tableService.Invoking(x=>x.AddCellAsync(Guid.NewGuid(),Guid.NewGuid(),
+                5,'z',"10X10"))
+                 .Should().Throw<ServiceException>().Which.Code.Should().Be(ErrorCodes.TableNotFound);
+             
+             await Task.CompletedTask;
+        }
+        
+        [Fact]
+        public async Task invoking_add_cell_async_should_invoke_update_async_on_repository()
+        {
+            _tableRepositoryMock.Setup(x => x.GetAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new Table(Guid.NewGuid(), "10x10"));
+            var tableService=new TableService(_tableRepositoryMock.Object, _mapperMock.Object);
+            
+            await tableService.AddCellAsync(Guid.NewGuid(),Guid.NewGuid(),
+                5,'z',"10X10");
+            
+            
+            _tableRepositoryMock.Verify(x=>x.UpdateAsync(It.IsAny<Table>()),Times.Once);
         }
     }
 }

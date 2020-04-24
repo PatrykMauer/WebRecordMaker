@@ -43,5 +43,5 @@ namespace RecordMaker.Tests.Controllers
 
             response.Should().BeOfType<OkObjectResult>();
         }
-    }
+    }  
 }
